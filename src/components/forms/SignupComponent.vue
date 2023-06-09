@@ -1,6 +1,6 @@
 <template>
     <div class="form-wrapper">
-        <form class="auth-form">
+        <div class="auth-form">
             <div class="form-control">
                 <label for="Name">
                     <span>Display Name</span>
@@ -23,7 +23,7 @@
                 <span class="icon"><ion-icon name="keypad-outline"></ion-icon></span>
             </div>
 
-            <button type="submit" class="submit">
+            <button @click="triggertoast" class="submit" >
                 Sign Up
             </button>
 
@@ -40,6 +40,12 @@
                 </svg>
                 Sign up with Google
             </button>
-        </form>
+        </div>
     </div>
 </template>
+
+<script>
+export default {
+  props: ['triggertoast']
+};
+</script>

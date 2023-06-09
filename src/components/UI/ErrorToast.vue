@@ -1,0 +1,71 @@
+<template>
+    <transition appear @enter="enter">
+        <div class="toast-wrapper">
+            <div class="toast">
+                <div class="icon">
+                    <ion-icon name="close"></ion-icon>
+                </div>
+                An Error Occurred
+            </div>
+        </div>
+    </transition>
+</template>
+
+<script>
+import gsap from "gsap";
+
+export default {
+    setup() {
+        const enter = (el) => {
+            gsap.to(el, {
+                opacity: 1,
+                y: "25px",
+                duration: .6,
+                ease: 'power3.out',
+            });
+        };
+
+        return { enter };
+    },
+};
+</script>
+
+<style scoped>
+.toast-wrapper {
+    position: fixed;
+    /* width: 40%; */
+    top: 5%;
+    right: 10%;
+    z-index: 100;
+}
+
+.toast {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 9px;
+    color: var(--dark);
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.2);
+    /* max-width: 500px; */
+    /* margin: 0 auto; */
+}
+
+.icon {
+    border-radius: 100%;
+    height: 2em;
+    width: 2em;
+}
+
+.icon ion-icon {
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 9px;
+    background-color: var(--pink);
+    border-radius: 100px;
+}
+</style>

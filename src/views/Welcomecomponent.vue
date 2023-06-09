@@ -15,18 +15,17 @@
         <div class="right-column column">
 
             <div class="right-content-wrapper higher-spacing">
-
-
+                <!-- <Succestoast v-if="showToast" /> -->
+                <!-- <Errortoast v-if="showToast"/> -->
                 <TransitionGroup tag="div" name="form" class="header">
                     <p>Start for free</p>
                     <h3>{{ loginMode ? "Register" : "Continue" }} to Bluesea.</h3>
                 </TransitionGroup>
 
                 <TransitionGroup tag="div" name="form">
-                    <Signupform v-if="loginMode" />
+                    <Signupform :triggertoast="triggertoast" v-if="loginMode" />
                     <Loginform v-else />
                 </TransitionGroup>
-
 
 
                 <TransitionGroup tag="div" name="form" class="footer">
@@ -43,17 +42,25 @@
 import { ref } from "vue";
 import Signupform from "../components/forms/SignupComponent.vue";
 import Loginform from "../components/forms/LoginComponent.vue";
+import Succestoast from "../components/UI/SuccessToast.vue";
+import Errortoast from "../components/UI/ErrorToast.vue";
 export default {
-    components: { Signupform, Loginform },
+    components: { Signupform, Loginform, Succestoast, Errortoast },
     name: "Welcome",
     setup() {
         const loginMode = ref(true);
+        const showToast = ref(false);
 
         const toggleMode = () => {
             loginMode.value = !loginMode.value;
         };
 
-        return { loginMode, toggleMode };
+        const triggertoast = () => {
+            showToast.value = true;
+            setTimeout(() => showToast.value = false, 4000)
+        };
+
+        return { loginMode, toggleMode, showToast, triggertoast };
     },
 };
 </script>
