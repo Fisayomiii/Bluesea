@@ -16,11 +16,10 @@ import gsap from "gsap";
 
 export default {
     setup() {
-
         const enter = (el) => {
             gsap.to(el, {
                 opacity: 1,
-                y: "-90px",
+                y: "25px",
                 duration: .6,
                 ease: 'power3.out',
             });
@@ -34,18 +33,18 @@ export default {
 <style scoped>
 .toast-wrapper {
     position: fixed;
-    /* width: 40%; */
-    top: 90%;
+    top: 5%;
     right: 10%;
     z-index: 100;
 }
 
 .toast {
+    font-size: small;
     display: flex;
-    gap: 10px;
+    gap: 5px;
     justify-content: center;
     align-items: center;
-    padding: 9px;
+    padding: 5px;
     color: var(--dark);
     background-color: var(--white);
     border-radius: 10px;
@@ -56,7 +55,7 @@ export default {
 
 .icon {
     border-radius: 100%;
-    height: 2em;
+    height: 1.8em;
     width: 2em;
 }
 
@@ -65,7 +64,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 9px;
+    padding: 5px;
     background-color: var(--green);
     border-radius: 100px;
 }

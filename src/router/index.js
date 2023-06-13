@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Welcome from '../views/Welcomecomponent.vue';
+import Welcome from '../views/Welcome.vue';
+import Home from '../views/Home.vue';
 
 const routes = [
     {
@@ -8,6 +9,14 @@ const routes = [
         component: Welcome,
         meta: {
             title: "Welcome to Bluesea"
+        }
+    },
+    {
+        path: '/home',
+        name: 'Home',
+        component: Home,
+        meta: {
+            title: "Home || Bluesea"
         }
     }
 ];
