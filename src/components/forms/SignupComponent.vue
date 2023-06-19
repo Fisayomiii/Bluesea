@@ -23,7 +23,7 @@
                 <span class="icon"><ion-icon name="keypad-outline"></ion-icon></span>
             </div>
 
-            <button @click="triggertoast" class="submit" >
+            <button @click="triggertoast" class="submit">
                 Sign Up
             </button>
 
@@ -43,9 +43,8 @@
         </div>
     </div>
 </template>
-
 <script>
 export default {
-  props: ['triggertoast']
+    props: ['triggertoast']
 };
 </script>

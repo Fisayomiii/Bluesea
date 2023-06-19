@@ -35,7 +35,7 @@
                         </a>
                     </li>
                 </ul>
-                <button>
+                <button v-on:click="isModalOpen = true" >
                     <div class="svg-wrapper-1">
                         <div class="svg-wrapper">
                             <ion-icon name="boat-outline"></ion-icon>
@@ -45,6 +45,42 @@
                 </button>
 
             </div>
+            <Teleport to="#modal">
+                <PostModal v-if="isModalOpen" :modalOpen="isModalOpen"/>
+            </Teleport>
         </div>
+
     </aside>
 </template>
+
+<script>
+import { ref } from "vue";
+import PostModal from "../modal/PostModal.vue";
+export default {
+    components: { PostModal },
+    setup() {
+        const isModalOpen = ref(false);
+
+        return { isModalOpen };
+    },
+};
+</script>
+
+<style scoped>
+.modal-enter-from,
+.modal-leave-to {
+    opacity: 0;
+    scale: .6;
+}
+
+.modal-enter-to,
+.modal-leave-from {
+    opacity: 1;
+    scale: 1.1;
+}
+
+.modal-enter-active,
+.modal-leave-active {
+    transition: .5s all;
+}
+</style>
