@@ -12,11 +12,11 @@ const routes = [
         }
     },
     {
-        path: '/home',
-        name: 'Home',
+        path: '/feed',
+        name: 'Feed',
         component: Home,
         meta: {
-            title: "Home || Bluesea"
+            title: "Feed || Bluesea"
         }
     }
 ];
@@ -26,5 +26,4 @@ const router = createRouter({
     routes
 });
 
-
-export default router
+export default router;

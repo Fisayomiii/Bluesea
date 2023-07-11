@@ -15,7 +15,6 @@
         <div class="right-column column">
 
             <div class="right-content-wrapper higher-spacing">
-                <!-- <Succestoast v-if="showToast" /> -->
                 <Errortoast v-if="showToast" />
                 <TransitionGroup tag="div" name="form" class="header">
                     <p>Start for free</p>

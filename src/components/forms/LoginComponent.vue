@@ -1,17 +1,25 @@
 <template>
     <div class="form-wrapper">
-        <form class="auth-form">
+        <form  class="auth-form">
+            <!-- <div class="form-control">
+                <label for="Name">
+                    <span>Name</span>
+                </label>
+                <input type="text" name="text" id="text" placeholder="Mary Jane">
+                <span class="icon"><ion-icon class="list-icon" name="person-outline"></ion-icon></span>
+            </div> -->
+
             <div class="form-control">
                 <label for="email">
-                    <span>Email address</span>
+                    <span>Email</span>
                 </label>
-                <input type="email" name="email" id="email" placeholder="maryjane@gmail.com">
+                <input type="email" placeholder="maryjane@gmail.com"  required>
                 <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
             </div>
 
             <div class="form-control">
                 <label for="password"> Password </label>
-                <input type="password" name="password" id="password" placeholder="6 characters or greater">
+                <input type="password" placeholder="6 characters or greater"  required>
                 <span class="icon"><ion-icon name="keypad-outline"></ion-icon></span>
             </div>
 
@@ -19,7 +27,7 @@
                 Sign In
             </button>
 
-            <button type="button" class="google-login">
+            <button type="button" class="google-login" >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="25" height="25" class="icon">
                     <path fill="#4285F4"
                         d="M502.6 232.9c0-16.4-1.3-32.4-3.8-47.9H259v90h126.2c-5.3 27.8-21.1 51.4-44.8 65.8v54h72.5c42.6-39.4 67.1-97.5 67.1-162.9z" />
@@ -32,7 +40,53 @@
                 </svg>
                 Sign in with Google
             </button>
-
         </form>
     </div>
 </template>
+<!-- <script>
+import { ref } from "vue";
+// import { signupWithEmail, signinWithGoogle } from "../../firebase/config"
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import router from "../../router";
+export default {
+    props: ['triggertoast'],
+    name: "Sign Up",
+    setup() {
+        const email = ref('');
+        const password = ref('');
+        const errMsg = ref()
+
+        const signin = () => {
+            const auth = getAuth()
+            signInWithEmailAndPassword(auth(), email.value, password.value)
+                .then((data) => {
+                    console.log(auth.currentUser)
+                    console.log("Successfully signed in");
+                    router.push("/feed");
+                }).catch((error) => {
+                    alert(error.message)
+                    console.log(error.code);
+                    switch (error.code) {
+                        case "auth/invalid-email":
+                            errMsg.value = "Invalid email";
+                            break;
+                        case "auth/user-not-found":
+                            errMsg.value = "User not found";
+                            break;
+                        case "auth/wrong-password":
+                            errMsg.value = "Incorrect password";
+                            break;
+                        default:
+                            errMsg.value = "Incorrect Email or password ";
+                            break;
+                    }
+                })
+        };
+
+        const signinWithGoogle = () => {
+
+        };
+        return { signin, signinWithGoogle };
+    }
+};
+</script> -->

@@ -1,9 +1,9 @@
 <template>
     <div class="form-wrapper">
-        <div class="auth-form">
+        <form @submit.prevent="signup" class="auth-form">
             <div class="form-control">
                 <label for="Name">
-                    <span>Display Name</span>
+                    <span>Name</span>
                 </label>
                 <input type="text" name="text" id="text" placeholder="Mary Jane">
                 <span class="icon"><ion-icon class="list-icon" name="person-outline"></ion-icon></span>
@@ -11,23 +11,23 @@
 
             <div class="form-control">
                 <label for="email">
-                    <span>Email address</span>
+                    <span>Email</span>
                 </label>
-                <input type="email" name="email" id="email" placeholder="maryjane@gmail.com">
+                <input type="email" placeholder="maryjane@gmail.com" v-model="email" required>
                 <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
             </div>
 
             <div class="form-control">
                 <label for="password"> Password </label>
-                <input type="password" name="password" id="password" placeholder="6 characters or greater">
+                <input type="password" placeholder="6 characters or greater" v-model="password" required>
                 <span class="icon"><ion-icon name="keypad-outline"></ion-icon></span>
             </div>
 
-            <button @click="triggertoast" class="submit">
+            <button type="submit" class="submit">
                 Sign Up
             </button>
 
-            <button type="button" class="google-login">
+            <button type="button" class="google-login" v-on:click="signupWithGoogle">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="25" height="25" class="icon">
                     <path fill="#4285F4"
                         d="M502.6 232.9c0-16.4-1.3-32.4-3.8-47.9H259v90h126.2c-5.3 27.8-21.1 51.4-44.8 65.8v54h72.5c42.6-39.4 67.1-97.5 67.1-162.9z" />
@@ -40,11 +40,74 @@
                 </svg>
                 Sign up with Google
             </button>
-        </div>
+        </form>
     </div>
 </template>
 <script>
+import { ref } from "vue";
+// import { signupWithEmail, signinWithGoogle } from "../../firebase/config"
+import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import router from "../../router";
 export default {
-    props: ['triggertoast']
+    props: ['triggertoast'],
+    name: "Sign Up",
+    setup() {
+        const email = ref('');
+        const password = ref('');
+
+        const signup = () => {
+            const auth = getAuth()
+            createUserWithEmailAndPassword(auth(), email.value, password.value)
+                .then((data) => {
+                    alert("Successfully registered")
+                    console.log("Successfully registered");
+                    router.push("/feed");
+                }).catch((error) => {
+                    alert(error.message)
+                    console.log(error.code);
+                })
+        };
+
+        const signupWithGoogle = () => {
+            // const provider = new GoogleAuthProvider();
+            // signInWithPopup(getAuth(), provider)
+            //     .then((result) => {
+            //         console.log(result.user);
+            //         router.push("/feed");
+            //     }).catch((error) => {
+            //         alert(error.message)
+            //         console.log(error.code);
+            //     })
+        };
+
+        // const signup = async () => {
+        //     try {
+        //         await signupWithEmail(email.value, password.value);
+        //         console.log('Sign up successful');
+        //         router.push("/feed");
+        //     } catch (error) {
+        //         console.error(error.message);
+        //         // Handle signup error
+        //     }
+        // };
+
+        // const signinWithGoogle = async () => {
+        //     try {
+        //         await signinWithGoogle();
+        //         console.log('Sign in with Google successful');
+        //         router.push("/feed");
+        //     } catch (error) {
+        //         console.error(error.message);
+        //         // Handle sign-in with Google error
+        //     }
+        // };
+
+        return {
+            email,
+            password,
+            signup,
+            signupWithGoogle
+        };
+    }
 };
 </script>
