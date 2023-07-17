@@ -5,7 +5,7 @@
                 <label for="Name">
                     <span>Name</span>
                 </label>
-                <input type="text" name="text" id="text" placeholder="Mary Jane">
+                <input type="text" placeholder="Mary Jane">
                 <span class="icon"><ion-icon class="list-icon" name="person-outline"></ion-icon></span>
             </div>
 
@@ -43,71 +43,117 @@
         </form>
     </div>
 </template>
-<script>
+<script setup>
 import { ref } from "vue";
-// import { signupWithEmail, signinWithGoogle } from "../../firebase/config"
 import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import router from "../../router";
-export default {
-    props: ['triggertoast'],
-    name: "Sign Up",
-    setup() {
-        const email = ref('');
-        const password = ref('');
 
-        const signup = () => {
-            const auth = getAuth()
-            createUserWithEmailAndPassword(auth(), email.value, password.value)
-                .then((data) => {
-                    alert("Successfully registered")
-                    console.log("Successfully registered");
-                    router.push("/feed");
-                }).catch((error) => {
-                    alert(error.message)
-                    console.log(error.code);
-                })
-        };
+const email = ref("");
+const password = ref("");
 
-        const signupWithGoogle = () => {
-            // const provider = new GoogleAuthProvider();
-            // signInWithPopup(getAuth(), provider)
-            //     .then((result) => {
-            //         console.log(result.user);
-            //         router.push("/feed");
-            //     }).catch((error) => {
-            //         alert(error.message)
-            //         console.log(error.code);
-            //     })
-        };
 
-        // const signup = async () => {
-        //     try {
-        //         await signupWithEmail(email.value, password.value);
-        //         console.log('Sign up successful');
-        //         router.push("/feed");
-        //     } catch (error) {
-        //         console.error(error.message);
-        //         // Handle signup error
-        //     }
-        // };
+const signup = () => {
+    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+        .then((data) => {
+            alert("Successfully registered")
+            console.log("Successfully registered");
+            router.push("/feed");
+        }).catch((error) => {
+            alert(error.message)
+            console.log(error.code);
+        })
+}
 
-        // const signinWithGoogle = async () => {
-        //     try {
-        //         await signinWithGoogle();
-        //         console.log('Sign in with Google successful');
-        //         router.push("/feed");
-        //     } catch (error) {
-        //         console.error(error.message);
-        //         // Handle sign-in with Google error
-        //     }
-        // };
+const signupWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(getAuth(), provider)
+        .then((result) => {
+            console.log(result.user);
+            router.push("/feed");
+        }).catch((error) => {
+            alert(error.message)
+            console.log(error.code);
+        })
+}
 
-        return {
-            email,
-            password,
-            signup,
-            signupWithGoogle
-        };
-    }
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { ref } from "vue";
+// // import { signupWithEmail, signinWithGoogle } from "../../firebase/config"
+// import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+// import router from "../../router";
+// export default {
+//     props: ['triggertoast'],
+//     name: "Sign Up",
+//     setup() {
+//         const email = ref("");
+//         const password = ref("");
+
+//         const signup = () => {
+//             // const auth = getAuth()
+//             // createUserWithEmailAndPassword(auth(), email.value, password.value)
+//             //     .then((data) => {
+//             //         alert("Successfully registered")
+//             //         console.log("Successfully registered");
+//             //         router.push("/feed");
+//             //     }).catch((error) => {
+//             //         alert(error.message)
+//             //         console.log(error.code);
+//             //     })
+
+
+//         };
+
+//         const signupWithGoogle = () => {
+//             // const provider = new GoogleAuthProvider();
+//             // signInWithPopup(getAuth(), provider)
+//             //     .then((result) => {
+//             //         console.log(result.user);
+//             //         router.push("/feed");
+//             //     }).catch((error) => {
+//             //         alert(error.message)
+//             //         console.log(error.code);
+//             //     })
+//         };
+
+//         // const signup = async () => {
+//         //     try {
+//         //         await signupWithEmail(email.value, password.value);
+//         //         console.log('Sign up successful');
+//         //         router.push("/feed");
+//         //     } catch (error) {
+//         //         console.error(error.message);
+//         //         // Handle signup error
+//         //     }
+//         // };
+
+//         // const signinWithGoogle = async () => {
+//         //     try {
+//         //         await signinWithGoogle();
+//         //         console.log('Sign in with Google successful');
+//         //         router.push("/feed");
+//         //     } catch (error) {
+//         //         console.error(error.message);
+//         //         // Handle sign-in with Google error
+//         //     }
+//         // };
+
+//         return { signup, signupWithGoogle };
+//     }
+// };
 </script>

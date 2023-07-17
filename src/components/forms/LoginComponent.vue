@@ -1,6 +1,8 @@
 <template>
+    <p v-if="errMsg" class="text-pink-900">{{ errMsg }}</p>
+
     <div class="form-wrapper">
-        <form  class="auth-form">
+        <form @submit.prevent="signIn" class="auth-form">
             <!-- <div class="form-control">
                 <label for="Name">
                     <span>Name</span>
@@ -13,13 +15,13 @@
                 <label for="email">
                     <span>Email</span>
                 </label>
-                <input type="email" placeholder="maryjane@gmail.com"  required>
+                <input type="email" placeholder="maryjane@gmail.com" v-model="email" required>
                 <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
             </div>
 
             <div class="form-control">
                 <label for="password"> Password </label>
-                <input type="password" placeholder="6 characters or greater"  required>
+                <input type="password" placeholder="6 characters or greater" v-model="password" required>
                 <span class="icon"><ion-icon name="keypad-outline"></ion-icon></span>
             </div>
 
@@ -27,7 +29,7 @@
                 Sign In
             </button>
 
-            <button type="button" class="google-login" >
+            <button type="button" class="google-login" v-on:click="signinWithGoogle">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="25" height="25" class="icon">
                     <path fill="#4285F4"
                         d="M502.6 232.9c0-16.4-1.3-32.4-3.8-47.9H259v90h126.2c-5.3 27.8-21.1 51.4-44.8 65.8v54h72.5c42.6-39.4 67.1-97.5 67.1-162.9z" />
@@ -43,50 +45,99 @@
         </form>
     </div>
 </template>
-<!-- <script>
+<script setup>
 import { ref } from "vue";
-// import { signupWithEmail, signinWithGoogle } from "../../firebase/config"
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import router from "../../router";
-export default {
-    props: ['triggertoast'],
-    name: "Sign Up",
-    setup() {
-        const email = ref('');
-        const password = ref('');
-        const errMsg = ref()
 
-        const signin = () => {
-            const auth = getAuth()
-            signInWithEmailAndPassword(auth(), email.value, password.value)
-                .then((data) => {
-                    console.log(auth.currentUser)
-                    console.log("Successfully signed in");
-                    router.push("/feed");
-                }).catch((error) => {
-                    alert(error.message)
-                    console.log(error.code);
-                    switch (error.code) {
-                        case "auth/invalid-email":
-                            errMsg.value = "Invalid email";
-                            break;
-                        case "auth/user-not-found":
-                            errMsg.value = "User not found";
-                            break;
-                        case "auth/wrong-password":
-                            errMsg.value = "Incorrect password";
-                            break;
-                        default:
-                            errMsg.value = "Incorrect Email or password ";
-                            break;
-                    }
-                })
-        };
+const email = ref("");
+const password = ref("");
+const errMsg = ref()
 
-        const signinWithGoogle = () => {
 
-        };
-        return { signin, signinWithGoogle };
-    }
-};
-</script> -->
+const signIn = () => {
+    signInWithEmailAndPassword(getAuth(), email.value, password.value)
+        .then((data) => {
+            alert("Successfully registered")
+            console.log("Successfully registered");
+            router.push("/feed");
+        }).catch((error) => {
+            alert(error.message)
+            console.log(error.code);
+            switch (error.code) {
+                case "auth/invalid-email":
+                    errMsg.value = "Invalid email";
+                    break;
+                case "auth/user-not-found":
+                    errMsg.value = "User not found";
+                    break;
+                case "auth/wrong-password":
+                    errMsg.value = "Incorrect password";
+                    break;
+                default:
+                    errMsg.value = "Incorrect Email or Password ";
+                    break;
+            }
+        })
+}
+
+const signinWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(getAuth(), provider)
+        .then((result) => {
+            console.log(result.user);
+            router.push("/feed");
+        }).catch((error) => {
+            alert(error.message)
+            console.log(error.code);
+        })
+}
+
+
+
+// import { ref } from "vue";
+// // import { signupWithEmail, signinWithGoogle } from "../../firebase/config"
+// import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+// import router from "../../router";
+// export default {
+//     props: ['triggertoast'],
+//     name: "Sign Up",
+//     setup() {
+//         const email = ref('');
+//         const password = ref('');
+//         const errMsg = ref()
+
+//         const signin = () => {
+//             const auth = getAuth()
+//             signInWithEmailAndPassword(auth(), email.value, password.value)
+//                 .then((data) => {
+//                     console.log(auth.currentUser)
+//                     console.log("Successfully signed in");
+//                     router.push("/feed");
+//                 }).catch((error) => {
+//                     alert(error.message)
+//                     console.log(error.code);
+//                     switch (error.code) {
+//                         case "auth/invalid-email":
+//                             errMsg.value = "Invalid email";
+//                             break;
+//                         case "auth/user-not-found":
+//                             errMsg.value = "User not found";
+//                             break;
+//                         case "auth/wrong-password":
+//                             errMsg.value = "Incorrect password";
+//                             break;
+//                         default:
+//                             errMsg.value = "Incorrect Email or password ";
+//                             break;
+//                     }
+//                 })
+//         };
+
+//         const signinWithGoogle = () => {
+
+//         };
+//         return { signin, signinWithGoogle };
+//     }
+// };
+</script>
