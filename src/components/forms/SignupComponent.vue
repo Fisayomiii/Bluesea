@@ -1,5 +1,6 @@
 <template>
     <div class="form-wrapper">
+        <p v-if="errMsg" style="color: red;">{{ errMsg }}</p>
         <form @submit.prevent="signup" class="auth-form">
             <div class="form-control">
                 <label for="Name">
@@ -43,117 +44,102 @@
         </form>
     </div>
 </template>
-<script setup>
+
+<script>
 import { ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signupWithEmail, signInWithGoogle } from "../../firebase/config";
 import router from "../../router";
+export default {
+    props: ['triggertoast'],
+    name: "Sign Up",
+    setup() {
+        const email = ref("");
+        const password = ref("");
+        const errMsg = ref();
 
-const email = ref("");
-const password = ref("");
+        const signup = async () => {
+            try {
+                await signupWithEmail(email.value, password.value);
+                alert("Successfully registered")
+                console.log("Successfully registered");
+                router.push("/feed");
+            } catch (error) {
+                alert(error.message)
+                console.log(error.code);
+                switch (error.code) {
+                    case "auth/invalid-email":
+                        errMsg.value = "Invalid email";
+                        break;
+                    case "auth/claims-too-large":
+                        errMsg.value = "Try again within 4min";
+                        break;
+                    case "auth/email-already-exists":
+                        errMsg.value = "The provided email is already in use by an existing user.";
+                        break;
+                    case "auth/invalid-password":
+                        errMsg.value = "Password should be six characters long";
+                        break;
+                    default:
+                        errMsg.value = "internal-error";
+                        break;
+                }
+            }
+        };
 
+        const signupWithGoogle = async () => {
+            try {
+                await signInWithGoogle();
+                alert("Successfully registered")
+                console.log("Successfully registered");
+                router.push("/feed");
+            } catch (error) {
+                alert(error.message)
+                console.log(error.code);
+            }
+        };
 
-const signup = () => {
-    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-        .then((data) => {
-            alert("Successfully registered")
-            console.log("Successfully registered");
-            router.push("/feed");
-        }).catch((error) => {
-            alert(error.message)
-            console.log(error.code);
-        })
-}
+        // const signup = () => {
+        //     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+        //         .then((data) => {
+        //             alert("Successfully registered")
+        //             console.log("Successfully registered");
+        //             router.push("/feed");
+        //         }).catch((error) => {
+        //             alert(error.message)
+        //             console.log(error.code);
+        //         })
+        // }
 
-const signupWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(getAuth(), provider)
-        .then((result) => {
-            console.log(result.user);
-            router.push("/feed");
-        }).catch((error) => {
-            alert(error.message)
-            console.log(error.code);
-        })
-}
+        // const signupWithGoogle = () => {
+        //     const provider = new GoogleAuthProvider();
+        //     signInWithPopup(getAuth(), provider)
+        //         .then((result) => {
+        //             console.log(result.user);
+        //             router.push("/feed");
+        //         }).catch((error) => {
+        //             alert(error.message)
+        //             console.log(error.code);
+        //             switch (error.code) {
+        //                 case "auth/invalid-email":
+        //                     errMsg.value = "Invalid email";
+        //                     break;
+        //                 case "auth/claims-too-large":
+        //                     errMsg.value = "Try again within 4min";
+        //                     break;
+        //                 case "auth/email-already-exists":
+        //                     errMsg.value = "The provided email is already in use by an existing user.";
+        //                     break;
+        //                 case "auth/invalid-password":
+        //                     errMsg.value = "Password should be six characters long";
+        //                     break;
+        //                 default:
+        //                     errMsg.value = "internal-error";
+        //                     break;
+        //             }
+        //         })
+        // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { ref } from "vue";
-// // import { signupWithEmail, signinWithGoogle } from "../../firebase/config"
-// import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-// import router from "../../router";
-// export default {
-//     props: ['triggertoast'],
-//     name: "Sign Up",
-//     setup() {
-//         const email = ref("");
-//         const password = ref("");
-
-//         const signup = () => {
-//             // const auth = getAuth()
-//             // createUserWithEmailAndPassword(auth(), email.value, password.value)
-//             //     .then((data) => {
-//             //         alert("Successfully registered")
-//             //         console.log("Successfully registered");
-//             //         router.push("/feed");
-//             //     }).catch((error) => {
-//             //         alert(error.message)
-//             //         console.log(error.code);
-//             //     })
-
-
-//         };
-
-//         const signupWithGoogle = () => {
-//             // const provider = new GoogleAuthProvider();
-//             // signInWithPopup(getAuth(), provider)
-//             //     .then((result) => {
-//             //         console.log(result.user);
-//             //         router.push("/feed");
-//             //     }).catch((error) => {
-//             //         alert(error.message)
-//             //         console.log(error.code);
-//             //     })
-//         };
-
-//         // const signup = async () => {
-//         //     try {
-//         //         await signupWithEmail(email.value, password.value);
-//         //         console.log('Sign up successful');
-//         //         router.push("/feed");
-//         //     } catch (error) {
-//         //         console.error(error.message);
-//         //         // Handle signup error
-//         //     }
-//         // };
-
-//         // const signinWithGoogle = async () => {
-//         //     try {
-//         //         await signinWithGoogle();
-//         //         console.log('Sign in with Google successful');
-//         //         router.push("/feed");
-//         //     } catch (error) {
-//         //         console.error(error.message);
-//         //         // Handle sign-in with Google error
-//         //     }
-//         // };
-
-//         return { signup, signupWithGoogle };
-//     }
-// };
+        return { email, password, signup, signupWithGoogle };
+    }
+};
 </script>

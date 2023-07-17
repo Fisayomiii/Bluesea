@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCaAvZ6wThykgtHJXKC7lOdpPBFHOWjrL8",
@@ -19,9 +19,13 @@ const signupWithEmail = (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
 
-const signinWithGoogle = async () => {
-  const googleProvider = new firebaseConfig.auth.GoogleAuthProvider()
-  await auth.signInWithPopup(googleProvider);
+const signInWithEmail = (email, password) => {
+  return signInWithEmailAndPassword(auth, email, password);
 };
 
-export { signupWithEmail, signinWithGoogle };
+const signInWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
+  return signInWithPopup(auth, provider);
+};
+
+export { signupWithEmail, signInWithEmail, signInWithGoogle };
