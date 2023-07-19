@@ -321,7 +321,7 @@ button:focus {
     width: 100%;
     height: 60px;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0);
+    background: var(--border);
     border: 1px solid var(--border);
     color: var(--white);
     margin: 10px 0;

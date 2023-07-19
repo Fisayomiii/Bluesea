@@ -1,6 +1,6 @@
 <template>
     <div class="form-wrapper">
-        <p v-if="errMsg" style="color: red;">{{ errMsg }}</p>
+        <p v-if="errMsg" style="color:  var(--pink)">{{ errMsg }}</p>
         <form @submit.prevent="signup" class="auth-form">
             <div class="form-control">
                 <label for="Name">
@@ -24,8 +24,28 @@
                 <span class="icon"><ion-icon name="keypad-outline"></ion-icon></span>
             </div>
 
-            <button type="submit" class="submit">
-                Sign Up
+            <button type="submit" :disabled="loading" class="submit">
+                <template v-if="!loading">
+                    Sign Up
+                </template>
+                <template v-else>
+                    <svg version="1.1" class="loading-svg" id="L4" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 100"
+                        xml:space="preserve">
+                        <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
+                            <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.1">
+                            </animate>
+                        </circle>
+                        <circle fill="#fff" stroke="none" cx="26" cy="50" r="6">
+                            <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.2">
+                            </animate>
+                        </circle>
+                        <circle fill="#fff" stroke="none" cx="46" cy="50" r="6">
+                            <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.3">
+                            </animate>
+                        </circle>
+                    </svg>
+                </template>
             </button>
 
             <button type="button" class="google-login" v-on:click="signupWithGoogle">
@@ -56,9 +76,12 @@ export default {
         const email = ref("");
         const password = ref("");
         const errMsg = ref();
+        const loading = ref(false);
 
         const signup = async () => {
             try {
+                loading.value = true;
+
                 await signupWithEmail(email.value, password.value);
                 alert("Successfully registered")
                 console.log("Successfully registered");
@@ -73,16 +96,18 @@ export default {
                     case "auth/claims-too-large":
                         errMsg.value = "Try again within 4min";
                         break;
-                    case "auth/email-already-exists":
+                    case "auth/email-already-in-use":
                         errMsg.value = "The provided email is already in use by an existing user.";
                         break;
-                    case "auth/invalid-password":
-                        errMsg.value = "Password should be six characters long";
+                    case "auth/weak-password":
+                        errMsg.value = "Password should be at least six characters long";
                         break;
                     default:
-                        errMsg.value = "internal-error";
+                        errMsg.value = "Internal-error";
                         break;
                 }
+            } finally {
+                loading.value = false;
             }
         };
 
@@ -139,7 +164,18 @@ export default {
         //         })
         // }
 
-        return { email, password, signup, signupWithGoogle };
+        return { email, password, loading, errMsg, signup, signupWithGoogle };
     }
 };
 </script>
+
+<style>
+.loading-svg {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+</style>

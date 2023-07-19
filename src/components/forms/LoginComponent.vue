@@ -25,8 +25,28 @@
                 <span class="icon"><ion-icon name="keypad-outline"></ion-icon></span>
             </div>
 
-            <button type="submit" class="submit">
-                Sign In
+            <button type="submit" :disabled="loading" class="submit">
+                <template v-if="!loading">
+                    Sign In
+                </template>
+                <template v-else>
+                    <svg version="1.1" class="loading-svg" id="L4" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 100"
+                        xml:space="preserve">
+                        <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
+                            <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.1">
+                            </animate>
+                        </circle>
+                        <circle fill="#fff" stroke="none" cx="26" cy="50" r="6">
+                            <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.2">
+                            </animate>
+                        </circle>
+                        <circle fill="#fff" stroke="none" cx="46" cy="50" r="6">
+                            <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.3">
+                            </animate>
+                        </circle>
+                    </svg>
+                </template>
             </button>
 
             <button type="button" class="google-login" v-on:click="signinWithGoogle">
@@ -56,9 +76,12 @@ export default {
         const email = ref("");
         const password = ref("");
         const errMsg = ref();
+        const loading = ref(false);
 
         const signIn = async () => {
             try {
+                loading.value = true;
+
                 await signInWithEmail(email.value, password.value);
                 alert("Successfully logged-in ")
                 console.log("Successfully logged-in ");
@@ -76,13 +99,18 @@ export default {
                     case "auth/email-already-exists":
                         errMsg.value = "The provided email is already in use by an existing user.";
                         break;
-                    case "auth/invalid-password":
-                        errMsg.value = "Password should be six characters long";
+                    case "auth/wrong-password":
+                        errMsg.value = "Wrong password";
+                        break;
+                    case "auth/weak-password":
+                        errMsg.value = "Password should be at least six characters long";
                         break;
                     default:
                         errMsg.value = "internal-error";
                         break;
                 }
+            } finally {
+                loading.value = false;
             }
         };
 
@@ -139,7 +167,7 @@ export default {
         //         })
         // }
 
-        return { email, password, signIn, signupWithGoogle };
+        return { email, password, errMsg, loading, signIn, signupWithGoogle };
     }
 };
 </script>

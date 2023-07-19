@@ -146,9 +146,9 @@ button:hover span {
     transform: translateX(5em);
 }
 
-button:active {
+/* button:active {
     transform: scale(0.95);
-}
+} */
 
 @keyframes fly-1 {
     from {
