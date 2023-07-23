@@ -5,7 +5,7 @@
                 <div class="icon">
                     <ion-icon name="close"></ion-icon>
                 </div>
-                An Error Occurred
+                {{ errorMessage }}
             </div>
         </div>
     </transition>
@@ -15,27 +15,30 @@
 import gsap from "gsap";
 
 export default {
+    props: {
+        errorMessage: String, 
+    },
     setup() {
         const enter = (el) => {
             gsap.to(el, {
                 opacity: 1,
                 y: "25px",
-                duration: .6,
+                duration: 0.6,
                 ease: 'power3.out',
-            } );
+            });
         };
-
 
         return { enter };
     },
 };
 </script>
 
+
 <style scoped>
 .toast-wrapper {
     position: fixed;
     top: 5%;
-    right: 10%;
+    right: 25%;
     z-index: 100;
 }
 

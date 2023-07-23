@@ -1,5 +1,7 @@
 <template>
     <div class="form-wrapper">
+        <Succestoast v-if="showToast" />
+        <Errortoast v-if="showErrorToast" :errorMessage="errMsg" />
         <p v-if="errMsg" style="color: red;">{{ errMsg }}</p>
 
         <form @submit.prevent="signIn" class="auth-form">
@@ -69,26 +71,33 @@
 import { ref } from "vue";
 import { signInWithEmail, signInWithGoogle } from "../../firebase/config";
 import router from "../../router";
+import Succestoast from "../UI/SuccessToast.vue";
+import Errortoast from "../UI/Errortoast.vue";
 export default {
-    props: ['triggertoast'],
+    components: { Succestoast, Errortoast },
     name: "Sign In",
     setup() {
         const email = ref("");
         const password = ref("");
         const errMsg = ref();
         const loading = ref(false);
+        const showToast = ref(false);
+        const showErrorToast = ref(false);
 
         const signIn = async () => {
             try {
                 loading.value = true;
 
                 await signInWithEmail(email.value, password.value);
-                alert("Successfully logged-in ")
-                console.log("Successfully logged-in ");
-                router.push("/feed");
+                // alert("Successfully logged-in ")
+                // console.log("Successfully logged-in ");
+                triggerToast();
+                setTimeout(() => {
+                    router.push("/feed");
+                }, 3000);
             } catch (error) {
                 alert(error.message)
-                console.log(error.code);
+                // console.log(error.code);
                 switch (error.code) {
                     case "auth/invalid-email":
                         errMsg.value = "Invalid email";
@@ -102,17 +111,24 @@ export default {
                     case "auth/wrong-password":
                         errMsg.value = "Wrong password";
                         break;
-                    case "auth/weak-password":
-                        errMsg.value = "Password should be at least six characters long";
+                        case "auth/weak-password":
+                        errMsg.value = "Invalid Password Lenght";
                         break;
                     default:
                         errMsg.value = "internal-error";
                         break;
                 }
+                    showErrorToast.value = true;
+                    setTimeout(() => showErrorToast.value = false, 4000)
             } finally {
                 loading.value = false;
             }
         };
+
+        const triggerToast = () => {
+            showToast.value = true;
+            setTimeout(() => showToast.value = false, 3000)
+        }
 
         const signupWithGoogle = async () => {
             try {
@@ -125,49 +141,8 @@ export default {
                 console.log(error.code);
             }
         };
-
-        // const signup = () => {
-        //     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-        //         .then((data) => {
-        //             alert("Successfully registered")
-        //             console.log("Successfully registered");
-        //             router.push("/feed");
-        //         }).catch((error) => {
-        //             alert(error.message)
-        //             console.log(error.code);
-        //         })
-        // }
-
-        // const signupWithGoogle = () => {
-        //     const provider = new GoogleAuthProvider();
-        //     signInWithPopup(getAuth(), provider)
-        //         .then((result) => {
-        //             console.log(result.user);
-        //             router.push("/feed");
-        //         }).catch((error) => {
-        //             alert(error.message)
-        //             console.log(error.code);
-        // switch (error.code) {
-        //     case "auth/invalid-email":
-        //         errMsg.value = "Invalid email";
-        //         break;
-        //     case "auth/claims-too-large":
-        //         errMsg.value = "Try again within 4min";
-        //         break;
-        //     case "auth/email-already-exists":
-        //         errMsg.value = "The provided email is already in use by an existing user.";
-        //         break;
-        //     case "auth/invalid-password":
-        //         errMsg.value = "Password should be six characters long";
-        //         break;
-        //     default:
-        //         errMsg.value = "internal-error";
-        //         break;
-        // }
-        //         })
-        // }
-
-        return { email, password, errMsg, loading, signIn, signupWithGoogle };
+        
+        return { email, password, errMsg, loading,showToast, triggerToast,showErrorToast, signIn, signupWithGoogle };
     }
 };
 </script>

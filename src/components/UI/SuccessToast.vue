@@ -34,7 +34,7 @@ export default {
 .toast-wrapper {
     position: fixed;
     top: 5%;
-    right: 10%;
+    right: 25%;
     z-index: 100;
 }
 
