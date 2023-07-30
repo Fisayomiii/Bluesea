@@ -2,7 +2,7 @@
     <div class="form-wrapper">
         <Succestoast v-if="showToast" />
         <Errortoast v-if="showErrorToast" :errorMessage="errMsg" />
-        <p v-if="errMsg" style="color: var(--pink)">{{ errMsg }}</p>
+        <!-- <p v-if="errMsg" style="color: var(--pink)">{{ errMsg }}</p> -->
         <form @submit.prevent="signup" class="auth-form">
             <div class="form-control">
                 <label for="Name">
@@ -103,7 +103,7 @@ export default {
                         errMsg.value = "Invalid Email";
                         break;
                     case "auth/claims-too-large":
-                        errMsg.value = "Try again within 4min";
+                        errMsg.value = "Try again after 4min";
                         break;
                     case "auth/network-request-failed":
                         errMsg.value = "Internet Error";
@@ -118,8 +118,8 @@ export default {
                         errMsg.value = "Internal-Error";
                         break;
                 }
-                    showErrorToast.value = true;
-                    setTimeout(() => showErrorToast.value = false, 4000)
+                showErrorToast.value = true;
+                setTimeout(() => showErrorToast.value = false, 4000)
             } finally {
                 loading.value = false;
             }
@@ -133,12 +133,13 @@ export default {
         const signupWithGoogle = async () => {
             try {
                 await signInWithGoogle();
-                alert("Successfully registered")
-                console.log("Successfully registered");
-                router.push("/feed");
+                triggerToast();
+                setTimeout(() => {
+                    router.push("/feed");
+                }, 3000);
             } catch (error) {
-                alert(error.message)
-                console.log(error.code);
+                showErrorToast.value = true;
+                setTimeout(() => showErrorToast.value = false, 4000)
             }
         };
 

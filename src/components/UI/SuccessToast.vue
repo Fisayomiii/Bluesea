@@ -5,7 +5,7 @@
                 <div class="icon">
                     <ion-icon name="checkmark-sharp"></ion-icon>
                 </div>
-                Signed up succesfully
+                Signed Succesfully
             </div>
         </div>
     </transition>

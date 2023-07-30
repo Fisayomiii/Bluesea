@@ -1,14 +1,14 @@
 <template>
     <div class="modal">
         <div class="modal-content">
-            <button class="close" v-on:click="isModalOpen = false">
+            <button class="close" v-on:click="modalOpen = false">
                 <i class="bx bx-x">X</i>
             </button>
             <div class="modal-inner">
                 <h3>Underconstruction</h3>
             </div>
 
-            <div class="post-tweet">
+            <!-- <div class="post-tweet">
                 <div class="form-group-1">
                     <img src="../../assets/Fw5oehhX0AM5i5F.jpg" alt="profile-pics" title="You">
                     <textarea placeholder="Say your mind..."></textarea>
@@ -21,14 +21,14 @@
                     </div>
                     <button class="btn" type="submit">Flow</button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['isModalOpen'],
+    props: ['modalOpen'],
 };
 </script>
 

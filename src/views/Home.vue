@@ -23,7 +23,6 @@ export default {
     components: { LeftSidebar, Post, Posts, Bottommenu, HiddensidebarComponent, PostModal },
     name: "Home || Bluesea",
     setup() {
-
         return {};
     },
 };
@@ -312,7 +311,7 @@ h1 {
 .tweets {
     display: flex;
     flex-flow: row;
-    justify-content: center;
+    /* justify-content: center; */
     font-size: 15px;
     width: 100%;
     line-height: 1.75rem;
@@ -320,9 +319,9 @@ h1 {
     border-bottom: 1px solid var(--border);
 }
 
-/* .tweets:hover {
-  background: var(--dark1);
-} */
+.tweets:hover {
+  background: var(--border);
+}
 
 .full-name:hover {
     cursor: pointer;
@@ -348,7 +347,6 @@ h1 {
 .user-content-box {
     display: flex;
     flex-flow: column nowrap;
-    color: var(--dark);
 }
 
 .user-content-box .user-names {
@@ -384,7 +382,7 @@ h1 {
 }
 
 .bottom-row {
-    max-width: 85px;
+    max-width: 50px;
     margin-top: 12px;
     padding-bottom: 1em;
     justify-content: space-between;
@@ -398,20 +396,16 @@ h1 {
     cursor: pointer;
 }
 
-.bottom-row div div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.5 all;
+.bottom-row , .comment-div , .like-div{
+    transition: 0.5s all;
 }
 
-.bottom-row span {
-    font-size: 13px;
+.bottom-row , .comment-div:hover{
+    color: var(--blue);
 }
 
-.bottom-row span {
-    padding: 0 12px;
-    line-height: 20px;
+.bottom-row , .like-div:hover{
+    color: var(--pink);
 }
 
 .bottom-menu {
@@ -419,7 +413,6 @@ h1 {
 }
 
 @media screen and (max-width: 900px) {
-
     .sidebar__sidebar,
     .sidebar__right {
         display: none;

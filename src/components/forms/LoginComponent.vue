@@ -2,7 +2,7 @@
     <div class="form-wrapper">
         <Succestoast v-if="showToast" />
         <Errortoast v-if="showErrorToast" :errorMessage="errMsg" />
-        <p v-if="errMsg" style="color: red;">{{ errMsg }}</p>
+        <!-- <p v-if="errMsg" style="color: red;">{{ errMsg }}</p> -->
 
         <form @submit.prevent="signIn" class="auth-form">
             <!-- <div class="form-control">
@@ -96,30 +96,30 @@ export default {
                     router.push("/feed");
                 }, 3000);
             } catch (error) {
-                alert(error.message)
+                // alert(error.message)
                 // console.log(error.code);
                 switch (error.code) {
                     case "auth/invalid-email":
                         errMsg.value = "Invalid email";
                         break;
                     case "auth/claims-too-large":
-                        errMsg.value = "Try again within 4min";
+                        errMsg.value = "Try again after 4min";
                         break;
-                    case "auth/email-already-exists":
-                        errMsg.value = "The provided email is already in use by an existing user.";
+                    case "auth/user-not-found":
+                        errMsg.value = "User Not Found";
                         break;
                     case "auth/wrong-password":
                         errMsg.value = "Wrong password";
                         break;
-                        case "auth/weak-password":
+                    case "auth/weak-password":
                         errMsg.value = "Invalid Password Lenght";
                         break;
                     default:
                         errMsg.value = "internal-error";
                         break;
                 }
-                    showErrorToast.value = true;
-                    setTimeout(() => showErrorToast.value = false, 4000)
+                showErrorToast.value = true;
+                setTimeout(() => showErrorToast.value = false, 4000)
             } finally {
                 loading.value = false;
             }
@@ -133,16 +133,17 @@ export default {
         const signupWithGoogle = async () => {
             try {
                 await signInWithGoogle();
-                alert("Successfully registered")
-                console.log("Successfully registered");
-                router.push("/feed");
+                triggerToast();
+                setTimeout(() => {
+                    router.push("/feed");
+                }, 3000);
             } catch (error) {
-                alert(error.message)
-                console.log(error.code);
+                showErrorToast.value = true;
+                setTimeout(() => showErrorToast.value = false, 4000)
             }
         };
-        
-        return { email, password, errMsg, loading,showToast, triggerToast,showErrorToast, signIn, signupWithGoogle };
+
+        return { email, password, errMsg, loading, showToast, triggerToast, showErrorToast, signIn, signupWithGoogle };
     }
 };
 </script>

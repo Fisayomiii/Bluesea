@@ -20,9 +20,11 @@
   "dependencies": {
     "firebase": "^9.23.0",
     "gsap": "^3.11.5",
+    "radix-vue": "^0.1.15",
     "react-hot-toast": "^2.4.1",
     "vue": "^3.2.47",
-    "vue-router": "^4.2.2"
+    "vue-router": "^4.2.2",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
