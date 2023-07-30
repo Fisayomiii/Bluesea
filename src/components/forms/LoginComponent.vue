@@ -71,8 +71,8 @@
 import { ref } from "vue";
 import { signInWithEmail, signInWithGoogle } from "../../firebase/config";
 import router from "../../router";
-import Succestoast from "../UI/SuccessToast.vue";
-import Errortoast from "../UI/Errortoast.vue";
+import Succestoast from "../../components/UI/SuccessToast.vue";
+import Errortoast from "../../components/UI/ErrorToast.vue";
 export default {
     components: { Succestoast, Errortoast },
     name: "Sign In",
