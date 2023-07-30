@@ -19,7 +19,7 @@
                 <!-- Comment Button -->
                 <div class="comment-div">
                     <!-- <div class="comment"> -->
-                        <ion-icon name="document-text-outline" title="Comment"></ion-icon>
+                    <ion-icon name="document-text-outline" title="Comment"></ion-icon>
                     <!-- </div> -->
                     <!-- <span class="comment">165</span> -->
                 </div>
@@ -27,12 +27,14 @@
                 <!-- Like Button -->
                 <div class="like-div">
                     <!-- <div class="like"> -->
-                        <ion-icon name="heart-outline" title="Like"> </ion-icon>
+                    <ion-icon name="heart-outline" title="Like"> </ion-icon>
                     <!-- </div> -->
                     <!-- <span>382</span> -->
                 </div>
             </div>
 
         </div>
+        
+
     </div>
 </template>
