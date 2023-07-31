@@ -1,6 +1,7 @@
 // Import required functions from Firebase modules
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // Import the Vuex store instance
 import store from '../vuex/store';
@@ -22,6 +23,8 @@ const app = initializeApp(firebaseConfig);
 
 // Get the authentication instance from Firebase using the initialized app
 const auth = getAuth(app);
+
+const db = getFirestore(app);
 
 // Create a new instance of the GoogleAuthProvider class
 const provider = new GoogleAuthProvider();
@@ -115,4 +118,4 @@ const signInWithGoogle = () => {
 };
 
 // Export the signupWithEmail, signInWithEmail, and signInWithGoogle functions
-export { signupWithEmail, signInWithEmail, signInWithGoogle };
+export { auth, db, signupWithEmail, signInWithEmail, signInWithGoogle };

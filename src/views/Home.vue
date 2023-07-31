@@ -3,7 +3,7 @@
         <LeftSidebar />
         <main class="sidebar__main">
             <Post />
-            <Posts />
+            <!-- <Posts /> -->
             <Bottommenu />
         </main>
         <HiddensidebarComponent />
@@ -406,6 +406,19 @@ h1 {
 
 .bottom-row , .like-div:hover{
     color: var(--pink);
+}
+
+.noPosts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.noPosts p{
+    color: var(--white);
+    margin-top: 5em;
 }
 
 .bottom-menu {
