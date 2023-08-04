@@ -236,7 +236,7 @@ h1 {
     height: 85px;
     padding: 1rem 1rem;
     border: none;
-    font-size: 1.2rem;
+    font-size: .9rem;
     font-weight: 300;
 }
 
@@ -363,7 +363,7 @@ h1 {
 
 .user-names .user-name {
     padding-right: 10px;
-    font-size: 1.05rem;
+    font-size: .9rem;
     font-weight: 400;
     color: var(--blue);
 }
