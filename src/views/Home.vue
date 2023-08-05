@@ -15,8 +15,8 @@
 <script>
 import LeftSidebar from "../components/layout/SidebarComponent.vue";
 import Post from "../components/layout/PostComponent.vue";
-import Posts from "../components/layout/PostsComponent.vue";
-import Bottommenu from "../components/layout/BottommenuComponent.vue";
+import Posts from "../components/layout/PostsComponents.vue";
+import Bottommenu from "../components/layout/BottomMenuComponent.vue";
 import HiddensidebarComponent from "../components/layout/HiddensidebarComponent.vue";
 import PostModal from "../components/modal/PostModal.vue";
 export default {
@@ -321,6 +321,25 @@ h1 {
 
 .tweets:hover {
   background: var(--border);
+}
+
+
+.usernameanddel{
+    display: flex;
+    /* gap:30em; */
+    justify-content: space-between;
+}
+
+.del{
+    position: absolute;
+    left: 70%;
+}
+.bin{
+    cursor: pointer;
+    /* position: sticky;
+    left: 75%; */
+    color: var(--white);
+    padding: .5em;
 }
 
 .full-name:hover {
