@@ -43,9 +43,7 @@
 </template>
 
 <script>
-// import { computed } from "vue";
 import { useStore } from "vuex";
-// import { ref, reactive } from "vue";
 import { formatDistanceToNow } from "date-fns";
 
 export default {

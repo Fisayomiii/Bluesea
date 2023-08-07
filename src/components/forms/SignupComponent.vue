@@ -1,7 +1,5 @@
 <template>
     <div class="form-wrapper">
-        <Succestoast v-if="showToast" />
-        <Errortoast v-if="showErrorToast" :errorMessage="errMsg" />
         <!-- <p v-if="errMsg" style="color: var(--pink)">{{ errMsg }}</p> -->
         <form @submit.prevent="signup" class="auth-form">
             <div class="form-control">
@@ -50,7 +48,7 @@
                 </template>
             </button>
 
-            <button type="button" class="google-login" v-on:click="signupWithGoogle">
+            <button type="button" class="google-login" v-on:click="signInWithGoogle">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="25" height="25" class="icon">
                     <path fill="#4285F4"
                         d="M502.6 232.9c0-16.4-1.3-32.4-3.8-47.9H259v90h126.2c-5.3 27.8-21.1 51.4-44.8 65.8v54h72.5c42.6-39.4 67.1-97.5 67.1-162.9z" />
@@ -71,18 +69,15 @@
 import { ref } from "vue";
 import { signupWithEmail, signInWithGoogle } from "../../firebase/config";
 import router from "../../router";
-import Succestoast from "../../components/UI/SuccessToast.vue";
-import Errortoast from "../../components/UI/ErrorToast.vue";
+import { usePush } from 'notivue';
 export default {
-    components: { Succestoast, Errortoast },
     name: "Sign Up",
     setup() {
         const email = ref("");
         const password = ref("");
         const errMsg = ref("");
         const loading = ref(false);
-        const showToast = ref(false);
-        const showErrorToast = ref(false);
+        const push = usePush();
 
         const signup = async () => {
             try {
@@ -90,7 +85,10 @@ export default {
                 await signupWithEmail(email.value, password.value);
                 // alert("Successfully registered")
                 // console.log("Successfully registered");
-                triggerToast();
+                push.success({
+                    message: `Signed Up successfully.`,
+                    duration: 4000,
+                })
                 setTimeout(() => {
                     router.push("/feed");
                 }, 3000);
@@ -118,32 +116,34 @@ export default {
                         errMsg.value = "Internal-Error";
                         break;
                 }
-                showErrorToast.value = true;
-                setTimeout(() => showErrorToast.value = false, 4000)
+                push.error({
+                    message: `${errMsg.value}`,
+                    duration: 4000,
+                })
             } finally {
                 loading.value = false;
             }
         };
 
-        const triggerToast = () => {
-            showToast.value = true;
-            setTimeout(() => showToast.value = false, 3000)
-        }
-
         const signupWithGoogle = async () => {
             try {
                 await signInWithGoogle();
-                triggerToast();
+                push.success({
+                    message: `Signed Up successfully.`,
+                    duration: 3000,
+                })
                 setTimeout(() => {
                     router.push("/feed");
                 }, 3000);
             } catch (error) {
-                showErrorToast.value = true;
-                setTimeout(() => showErrorToast.value = false, 4000)
+                push.error({
+                    message: `Something went wrong. Please try again later.`,
+                    duration: 4000,
+                })
             }
         };
 
-        return { email, password, loading, errMsg, showToast, triggerToast, showErrorToast, signup, signupWithGoogle };
+        return { email, password, loading, errMsg, push, signup, signupWithGoogle };
     }
 };
 </script>

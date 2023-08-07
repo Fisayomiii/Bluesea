@@ -15,9 +15,9 @@
 <script>
 import LeftSidebar from "../components/layout/SidebarComponent.vue";
 import Post from "../components/layout/PostComponent.vue";
-import Posts from "../components/layout/PostsComponents.vue";
-import Bottommenu from "../components/layout/BottomMenuComponent.vue";
-import HiddensidebarComponent from "../components/layout/HiddensidebarComponent.vue";
+import Posts from "../components/layout/PostsComponent.vue";
+import Bottommenu from "../components/layout/BottomMenu.vue";
+import HiddensidebarComponent from "../components/layout/HiddenSidebar.vue";
 import PostModal from "../components/modal/PostModal.vue";
 export default {
     components: { LeftSidebar, Post, Posts, Bottommenu, HiddensidebarComponent, PostModal },

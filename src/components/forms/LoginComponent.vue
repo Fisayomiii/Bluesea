@@ -1,7 +1,5 @@
 <template>
     <div class="form-wrapper">
-        <Succestoast v-if="showToast" />
-        <Errortoast v-if="showErrorToast" :errorMessage="errMsg" />
         <!-- <p v-if="errMsg" style="color: red;">{{ errMsg }}</p> -->
 
         <form @submit.prevent="signIn" class="auth-form">
@@ -71,18 +69,16 @@
 import { ref } from "vue";
 import { signInWithEmail, signInWithGoogle } from "../../firebase/config";
 import router from "../../router";
-import Succestoast from "../../components/UI/SuccessToast.vue";
-import Errortoast from "../../components/UI/ErrorToast.vue";
+import { usePush } from 'notivue';
+
 export default {
-    components: { Succestoast, Errortoast },
     name: "Sign In",
     setup() {
         const email = ref("");
         const password = ref("");
         const errMsg = ref();
         const loading = ref(false);
-        const showToast = ref(false);
-        const showErrorToast = ref(false);
+        const push = usePush();
 
         const signIn = async () => {
             try {
@@ -91,7 +87,10 @@ export default {
                 await signInWithEmail(email.value, password.value);
                 // alert("Successfully logged-in ")
                 // console.log("Successfully logged-in ");
-                triggerToast();
+                push.success({
+                    message: `Signed Up successfully.`,
+                    duration: 4000,
+                })
                 setTimeout(() => {
                     router.push("/feed");
                 }, 3000);
@@ -114,36 +113,41 @@ export default {
                     case "auth/weak-password":
                         errMsg.value = "Invalid Password Lenght";
                         break;
+                    case "auth/network-request-failed":
+                        errMsg.value = "Internet Error";
+                        break;
                     default:
                         errMsg.value = "internal-error";
                         break;
                 }
-                showErrorToast.value = true;
-                setTimeout(() => showErrorToast.value = false, 4000)
+                push.error({
+                    message: `${errMsg.value}`,
+                    duration: 4000,
+                })
             } finally {
                 loading.value = false;
             }
         };
 
-        const triggerToast = () => {
-            showToast.value = true;
-            setTimeout(() => showToast.value = false, 3000)
-        }
-
         const signupWithGoogle = async () => {
             try {
                 await signInWithGoogle();
-                triggerToast();
+                push.success({
+                    message: `Signed Up successfully.`,
+                    duration: 3000,
+                })
                 setTimeout(() => {
                     router.push("/feed");
                 }, 3000);
             } catch (error) {
-                showErrorToast.value = true;
-                setTimeout(() => showErrorToast.value = false, 4000)
+                push.error({
+                    message: `Something went wrong. Please try again later.`,
+                    duration: 4000,
+                })
             }
         };
 
-        return { email, password, errMsg, loading, showToast, triggerToast, showErrorToast, signIn, signupWithGoogle };
+        return { email, password, errMsg,push, loading, signIn, signupWithGoogle };
     }
 };
 </script>

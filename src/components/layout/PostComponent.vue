@@ -4,8 +4,6 @@
 		<img src="../../assets/Favico.png" alt="Bluesky" height="30">
 	</div>
 
-	<InputErrorToast v-if="showErrorToast" />
-	<SuccesfullyUploadedToast v-if="showSucessToast" />
 
 	<div class="post-tweet">
 		<div class="form-group-1" v-if="user">
@@ -62,21 +60,18 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { ref, reactive, onMounted } from "vue";
 import { addPost, getAllPosts } from "../../firebase/post"; // Replace with the correct path to post.js
-// import { formatDistanceToNow } from "date-fns";
-import PostsComponent from './PostsComponents.vue';
-import InputErrorToast from "../../components/UI/InputErrorToast.vue";
-import SuccesfullyUploadedToast from "../UI/SuccesfullyUploadedToast.vue";
+import { usePush } from 'notivue';
+import PostsComponent from './PostsComponent.vue';
 
 export default {
-	components: { InputErrorToast, SuccesfullyUploadedToast, PostsComponent },
+	components: { PostsComponent },
 	setup() {
 		const store = useStore();
 		const user = computed(() => store.getters.user);
 		const postContent = ref("");
 		const posts = reactive([]);
-		const showErrorToast = ref(false);
-		const showSucessToast = ref(false);
 		const loading = ref(false);
+		const push = usePush();
 
 		// Load all posts from Firestore when the component is mounted
 		onMounted(async () => {
@@ -84,7 +79,11 @@ export default {
 				const allPosts = await getAllPosts();
 				posts.push(...allPosts);
 			} catch (error) {
-				console.error("Error fetching posts:", error);
+				// console.error("Error fetching posts:", error);
+				push.error({
+                    message: `"Error fetching posts:",${error}`,
+                    duration: 4000,
+                })
 			}
 		});
 
@@ -92,8 +91,10 @@ export default {
 			if (!postContent.value.trim()) {
 				// Check if postContent is empty or contains only whitespace characters
 				navigator.vibrate(700);
-				showErrorToast.value = true;
-				setTimeout(() => showErrorToast.value = false, 4000)
+				push.error({
+                    message: `Input is Empty`,
+                    duration: 3000,
+                })
 				return;
 			} else {
 				try {
@@ -111,8 +112,10 @@ export default {
 						user.photoURL
 					);
 					posts.unshift(newPost); // Add the new post to the beginning of the posts array for immediate display
-					showSucessToast.value = true;
-					setTimeout(() => showSucessToast.value = false, 4000)
+					push.success({
+						message: `Uploaded successfully.`,
+						duration: 4000,
+					})
 					postContent.value = ""; // Clear the input field after uploading
 				} catch (error) {
 					console.error("Error uploading post:", error);
@@ -127,8 +130,7 @@ export default {
 			posts,
 			uploadPost,
 			user,
-			showErrorToast,
-			showSucessToast,
+			push,
 			loading,
 		};
 	},
